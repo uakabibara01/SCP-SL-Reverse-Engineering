@@ -29,7 +29,7 @@ Ghidra == https://github.com/NationalSecurityAgency/ghidra
 
 Dump program 1:PE-sieve: scans the given process, recognizes and removes various potentially harmful implants.
 
-Dump program 2: x64dbg (in this case you need to use x32dbg + plugin) == https://x64dbg.com/
+Dump program 2: x64dbg (in this case you need to use x32dbg + plugin ScylaHide ) == https://x64dbg.com/
 
 A script file for Ghidra in Python will also be added to store all functions in C-like code.
 
@@ -44,11 +44,15 @@ It collects everything that SCPSL imports, so you can use these dumps in other p
 
 ## Installation
 
-Using
-
 ```bash
 gh repo clone uakabibara01/SCP-SL-Reverse-Engineering
 ```
+
+## Using
+
+We download the latest release, unpack the files and get everything we need, then it's up to you:
+In the Decompiled Libraries file there are folders for each of the 4 libraries where there are files with functions, this is C-like code.
+and in the Dump-Files there are folders for each library that the game uses, there is a dump of the library and what it imports.
 
 ## !
 
