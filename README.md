@@ -50,7 +50,7 @@ Using
 gh repo clone uakabibara01/SCP-SL-Reverse-Engineering
 ```
 
-## FAQ
+## !
 
 #### Remark 1
 
