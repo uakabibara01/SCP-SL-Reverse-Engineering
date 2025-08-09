@@ -3,10 +3,20 @@
 
 This repository is a reverse engineering ARCHIVE of the game SCP:Secret-Laboratoratory.
 It contains a dump of all the game libraries that each one imports, as well as separate folders with decompilations to C-like code/ASM code: 4 main libraries:
+
+
 SCPSL.exe == 140000000.SCPSL.exe
+
+
 SC-AC.dll == 180000000.SL-AC.dll
+
+
 UnityPlayer.dll == 7ffda05f0000.UnityPlayer.dll
+
+
 GameAssembly.dll == 7ffd95060000.GameAssembly.dll
+
+
 Other imported libraries do not require decompilation etc.: they are system ones.
 You can also use anti-obfuscation programs to read C++ code etc.
 I chose this option, the following programs were used:
