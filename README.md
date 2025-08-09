@@ -47,6 +47,7 @@ It collects everything that SCPSL imports, so you can use these dumps in other p
 ```bash
 gh repo clone uakabibara01/SCP-SL-Reverse-Engineering
 ```
+Download WinRar to unpack the archive.
 
 ## Using
 
