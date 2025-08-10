@@ -6,6 +6,7 @@ The author is not responsible for the use of this archive, use it exclusively fo
 do not use dumps/code analysis or decompile code to use it to create prohibited software, 
 the author is against this and does not support it, and the main purpose is analysis and is of no more interest. 
 Don't play with cheats.
+
 Thank you for your understanding: ヽ(*￣▽￣*)ノ
 
 # SCP-SL-Reverse-Engineering
