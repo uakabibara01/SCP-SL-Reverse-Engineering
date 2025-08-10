@@ -1,3 +1,8 @@
+## !
+
+#### Remark 
+
+The author is not responsible for the use of this archive, use solely for educational purposes.
 
 # SCP-SL-Reverse-Engineering
 
@@ -89,11 +94,6 @@ For each new update, the archive will be updated, and all dumps will be up to da
 because I don't just export, but also do a lot of other work, especially for each update
 I have to analyze everything again, or at least some part of it.
 
-## !
-
-#### Remark 
-
-The author is not responsible for the use of this archive, use solely for educational purposes.
 
 ![Logo](https://raw.githubusercontent.com/uakabibara01/uakabibara01/refs/heads/main/vn5K5O6d_400x400.jpg)
 
