@@ -1,0 +1,291 @@
+
+Background: Analysis of the functions of the SC-AC.dll library of the SCP: Secret Laboratory anti-cheat system
+The SC-AC.dll library is a key component of the SCP: Secret Laboratory (SCPSL) anti-cheat system, which provides protection against client file modifications, cheat injections, memory manipulation, and other unauthorized actions. Analysis of the decompiled functions of the library shows the use of cryptographic algorithms (hashing, encryption, authentication), data processing (Base64 encoding/decoding), SSL/TLS connection management, and hardware identifier (HWID) validation. The functions are optimized using modern SIMD instructions (SSE, AVX, AVX2, AVX-512) to ensure high real-time performance. Below is an updated description of the analyzed functions, including new information about FUN_180358100 and FUN_1801d69a0, their role in anti-cheat, and their connection to the HWID ban.
+
+1. FUN_18002da00
+Purpose: Implements the SHA-1 hashing algorithm using AVX instructions and hardware SHA extensions.
+
+Description: The function calculates a 160-bit hash for input data, processing it in blocks of 64 bytes. It uses AVX instructions (vpaddd_avx, vpslld_avx, vpsrld_avx, vpor_avx, vpand_avx) and specialized SHA instructions (sha1rnds4_sha, sha1nexte_sha, sha1msg1_sha, sha1msg2_sha) for parallel processing.
+
+Role in anti-cheat: Used to verify the integrity of game files or memory areas by creating hashes to compare with reference values on the server. SHA-1 is used for quick checks, such as for HWID or configuration files.
+
+Features:
+
+Optimized for speed with AVX and SHA instructions.
+Processing in 80-round cycles (SHA-1 standard).
+SHA-1 collision vulnerability can be used to bypass checks.
+2. FUN_18001fec0
+Purpose: Implementation of the SHA-256 hashing algorithm using AVX and SHA extensions.
+
+Description: Calculates a 256-bit hash, processing data in 64-byte blocks. Uses AVX instructions (vpaddd_avx, vpslld_avx, vpsrld_avx, vpand_avx, vpandn_avx) and SHA-256 instructions (sha256rnds2_sha, sha256msg1_sha, sha256msg2_sha) for parallel processing of two streams.
+
+Role in anti-cheat: Used to verify the integrity of critical data such as HWID, key files or network packets. SHA-256 is cryptographically stable and is used to protect against sophisticated attacks.
+
+Features:
+
+Parallel processing of two data streams.
+64 rounds of calculations (SHA-256 standard).
+Checking support for SHA extensions for hardware acceleration.
+3. FUN_180030c40
+Purpose: Implementation of SHA-1 for parallel processing of multiple data blocks using AVX.
+
+Description: Similar to FUN_18002da00, but optimized for processing multiple blocks at once. Uses AVX instructions for parallel processing of large amounts of data.
+
+Role in anti-cheat: Used to quickly check the integrity of large amounts of data, such as game resources or memory dumps, to detect modifications.
+
+Features:
+
+Parallel processing of multiple blocks.
+Uses standard SHA-1 constants and 80 rounds.
+Vulnerable to attacks due to the weakness of SHA-1.
+4. FUN_180011a00
+Purpose: Implementation of SHA-256 with support for hardware SHA extensions and AVX2.
+
+Description: Calculates a 256-bit hash using AVX2 instructions and SHA extensions. Similar to FUN_18001fec0, but with additional optimizations for wider parallel processing.
+
+Anti-cheat role: Used to verify the integrity of critical data such as HWID or network packets where high cryptographic strength is required.
+
+Features:
+
+Uses AVX2 for wider parallel processing.
+
+Supports hardware SHA instructions.
+64 round processing (SHA-256 standard).
+5. FUN_18004bf60
+Purpose: Implements the GCM (Galois/Counter Mode) algorithm for authenticated encryption using AVX-512.
+
+Description: Performs Galois field multiplication (GF(2^128)) to calculate an authentication tag using AVX-512 instructions (vpclmulqdq, vpshufb, vpternlogq). Processes large (≥768 bytes), medium (256–767 bytes), and small (<256 bytes) data blocks.
+
+Role in anti-cheat: Used to encrypt and authenticate network packets or HWID, providing protection against forgery.
+
+Features:
+
+High performance thanks to AVX-512.
+Flexible processing of data of different sizes.
+Potential decompilation error (halt_baddata).
+6. FUN_18004e620
+Purpose: GCM implementation with flexible data block processing using AVX-512.
+
+Description: Similar to FUN_18004bf60, but with an emphasis on flexible residual data processing. Uses AVX-512 instructions and masks for processing arbitrary-sized data.
+
+Role in anti-cheat: Used for real-time data encryption and authentication, in particular for protecting network packets.
+
+Features:
+
+Processing large, medium and small data blocks.
+Uses masks for residual data.
+Similar issue with possible decompilation error (halt_baddata).
+7. FUN_18001b280
+Purpose: SHA-1 implementation with support for hardware SHA instructions or software processing via AVX2.
+
+Description: Computes a 160-bit hash using hardware SHA instructions (sha1rnds4_sha, sha1nexte_sha) or software implementation via AVX2. Processes 64-byte blocks with 80 rounds.
+
+Role in anti-cheat: Used to verify the integrity of data such as game files or HWID, similar to FUN_18002da00.
+
+Features:
+
+Flexibility due to dual implementation (hardware/software).
+
+Uses standard SHA-1 constants.
+
+Vulnerable to attacks due to weakness of SHA-1.
+8. FUN_18003bb40
+Purpose: Implementation of the ChaCha stream encryption algorithm using AVX-512.
+
+Description: Performs stream encryption by processing large data blocks (≥512 bytes) using AVX-512 and smaller blocks via scalar operations. Performs 10 rounds of transformations (addition, XOR, shifts, permutations).
+
+Role in anti-cheat: Used to encrypt network data or protect game memory from modifications. ChaCha is fast and cryptographically stable.
+
+Features:
+
+High performance for large data thanks to AVX-512.
+
+Flexible processing of data of various sizes.
+
+Use of permutations through pshufb.
+9. FUN_18003c500
+Purpose: Implementation of the ChaCha algorithm with an emphasis on processing medium and small blocks of data.
+
+Description: Similar to FUN_18003bb40, but optimized for smaller data volumes, using AVX2 instructions. Performs 10 rounds of transformations.
+
+Role in anti-cheat: Used to encrypt short network packets or data with a small volume.
+
+Features:
+
+Optimization for smaller blocks via AVX2.
+Similar structure with 10 rounds.
+High speed for real time.
+10. FUN_1800f7f60
+Purpose: AES-GCM implementation using AVX-512 for decryption and authentication.
+
+Description: Performs AES-GCM data decryption using AVX-512 for Galois field multiplication and AES instructions (aesenc, aesenclast) for processing large amounts of data.
+
+Role in anti-cheat: Provides protection for network data or game configurations, ensuring confidentiality and integrity.
+
+Features:
+
+High performance thanks to AVX-512.
+Integration of encryption and authentication.
+Real-time processing of large amounts of data.
+11. FUN_1803f56a0
+Purpose: String parser for identifying cryptographic parameters.
+
+Description: Parses text strings (e.g., "algorithm-id") and converts them to numeric codes using binary search.
+
+Anti-cheat role: Used to handle configuration parameters, such as choosing encryption or hashing algorithms, in network protocols or configurations.
+
+Features:
+
+Efficient implementation of binary search.
+
+Configure cryptographic components.
+12. FUN_1805c5640
+Purpose: Base64 encoding using SIMD instructions (SSSE3/SSE4).
+
+Description: Encodes binary data into Base64 format, processing blocks of 64 bytes using SIMD instructions (pshufb, pmaddubsw, pavgb). Adds trailing = characters (padding).
+
+Anti-cheat role: Formats data (e.g., HWID, certificates) in Base64 for transmission to a server or storage.
+
+Features:
+
+High performance thanks to SIMD.
+Error handling with return of invalid character position.
+Integration with cryptographic functions.
+13. FUN_1805c7120
+Purpose: Vectorized implementation of Base64 decoder using SIMD instructions.
+
+Description: Decodes Base64 data into binary format, processing blocks of 64 characters using SSE instructions (pshufb, pavgb, paddsb, pmaddubsw, pmaddwd). Checks the validity of characters and processes the final =.
+
+Role in anti-cheat: Decodes the received data (for example, HWID or packets) for further processing.
+
+Features:
+
+Parallel processing of 16 characters via SSE.
+Checking for invalid characters with error code 7.
+Uses permutation tables.
+14. FUN_1805a2a40
+Purpose: Low-level routine for data processing (likely encoding or compression) using AVX-512.
+
+Description: Processes 64-byte blocks of data, performing transformations (permutations, shifts, multiplications) using AVX-512 instructions (vmovdqu32_avx512f, vpmovzxbw_avx512bw, vpshufb_avx512bw). Checks data validity and handles leftover bytes.
+
+Role in anti-cheat: Likely used to encode or compress HWID or network packets before transmission.
+
+Features:
+
+High performance thanks to AVX-512.
+
+Error handling via halt_baddata.
+
+Uses POPCOUNT to analyze bitmasks.
+15. FUN_1805c0600
+Purpose: Decode Base64 using AVX instructions.
+
+Description: Decodes Base64 data into binary format, processing blocks of 64 bytes using AVX instructions (pshufb, pavgb, paddsb, pmaddubsw, pmaddwd). Checks character validity and handles trailing =.
+
+Role in anti-cheat: Decodes data from the server (e.g. HWID or configuration) for verification.
+
+Features:
+
+Parallel processing of 16-byte vectors.
+
+Detailed error handling.
+
+Integration with network data processing.
+16. FUN_1805c2080
+Purpose: Encodes binary data into Base64 using AVX instructions.
+
+Description: Encodes binary data in Base64, processing blocks of 64 bytes using AVX instructions (pshufb, pavgb, paddsb, pmaddubsw, pmaddwd). Adds trailing = and checks data validity.
+
+Role in anti-cheat: Formats HWID or network packets in Base64 for transmission to the server.
+
+Features:
+
+High performance thanks to AVX.
+
+Processing residual data.
+
+Return encoding status.
+17. FUN_180490100
+Purpose: Creates and initializes SSL/TLS context (SSL_CTX) for connection setup.
+
+Description: Initializes the SSL_CTX structure, configuring protocol methods (TLSv1.2, TLSv1.3), ciphers (TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256), certificates, and security parameters.
+
+Role in anti-cheat: Provides a secure SSL/TLS connection for transmitting HWIDs, hashes, or configurations.
+
+Features:
+
+Modular structure with auxiliary function calls.
+
+Error logging in ssl/ssl_lib.c (SSL_CTX_new_ex function).
+
+Support for modern TLSv1.3 ciphers.
+18. FUN_1804ce5a0
+Purpose: Creates a ServerKeyExchange message for the TLS protocol.
+
+Description: Generates a ServerKeyExchange message containing key exchange parameters (ECDH/DH) and signatures for the TLS handshake. Checks configuration, certificates, and algorithms.
+
+Role in anti-cheat: Ensures secure data transmission within the TLS protocol, including for client authentication.
+
+Features:
+
+Works at the TLS handshake level.
+Error logging in ssl/statem/statem_srvr.c (tls_construct_server_key_exchange function).
+Depends on FUN_180490100.
+19. FUN_180358100
+Purpose: Validates RSA keys in multi-prime format for cryptographic verification.
+
+Description: Verifies the correctness of an RSA key pair (public/private) in multi-prime format, processing the key components (modulus, exponent, prime numbers). Uses functions for working with large numbers (BIGNUM) through FUN_18032f3e0, FUN_18032d2c0, FUN_18032dd00, FUN_1803c4700. Returns 1 on success or 0/0xffffffff on error.
+
+Role in anti-cheat: Used for HWID validation, checking cryptographic keys that may be associated with hardware identifiers. Incorrect keys cause validation to fail, which can cause HWID ban.
+
+Features:
+
+Support for multi-prime RSA for efficient calculations.
+Error logging in crypto\rsa\rsa_chk.c (rsa_validate_keypair_multiprime function) with codes (e.g. 0x93, 0x7b).
+Link to FUN_1802d7c00 for packing verified data and FUN_18000f7c0 for large number calculations.
+20. FUN_1801d69a0
+Purpose: Parses configuration files in OpenSSL format for processing cryptographic parameters.
+
+Description: Processes configuration files, parses directives (.include, .pragma, dollarid, abspath, includedir) and manages memory for buffers. Uses OpenSSL-like functions (FUN_180167d60, FUN_1801682c0) to work with BIO objects.
+
+Role in anti-cheat: Processes configurations containing parameters for HWID or RSA key validation. For example, the .include directive can point to files with keys that are verified by FUN_180358100.
+
+Features:
+
+Processing of .include, .pragma directives for dynamic configuration linking.
+Error logging in crypto\conf\conf_def.c (def_load_bio function) with codes (e.g. 0x7a, 0x7d, 0x8000e).
+Communication with FUN_180358100 for transferring key parameters and FUN_1802d7c00 for data packaging.
+General conclusion about the operation of the SCPSL anti-cheat system
+The SC-AC.dll anti-cheat system is multi-layered, using modern cryptographic algorithms, optimizations and network protocols to protect against cheats and manipulations. The main components include:
+
+Data Integrity Check:
+SHA-1 (FUN_18002da00, FUN_180030c40, FUN_18001b280) and SHA-256 (FUN_18001fec0, FUN_180011a00) calculate hashes for game files, memory, and HWID. SHA-256 is used for critical data, SHA-1 for quick checks.
+RSA Multi-Prime (FUN_180358100) verifies cryptographic keys associated with HWID.
+Encryption and Authentication:
+GCM (FUN_18004bf60, FUN_18004e620) and AES-GCM (FUN_1800f7f60) provide encryption and authentication of network packets.
+ChaCha (FUN_18003bb40, FUN_18003c500) is used to stream encrypt data such as HWIDs or packets.
+Data Processing:
+Base64 (FUN_1805c5640, FUN_1805c2080, FUN_1805c0600, FUN_1805c7120, FUN_1805a2a40) formats HWIDs, certificates or packets for transmission.
+Configuration Parsing (FUN_1801d69a0, FUN_1803f56a0) processes parameters for configuring cryptographic algorithms.
+Secure Communication:
+SSL/TLS (FUN_180490100, FUN_1804ce5a0) provides a secure connection between the client and the server using TLSv1.3.
+Performance optimization:
+All functions use SIMD instructions (SSE, AVX, AVX2, AVX-512) for parallel processing, allowing real-time operation without significant impact on game performance.
+HWID ban mechanism:
+HWID is collected via WinAPI, WMI, or low-level queries (likely in unparsed functions).
+HWID is encoded in Base64 (FUN_1805c5640, FUN_1805c2080), encrypted (FUN_18004bf60, FUN_1800f7f60, FUN_18003bb40), and transmitted over SSL/TLS (FUN_180490100, FUN_1804ce5a0).
+The server verifies HWID using hashes (SHA-1, SHA-256) or RSA keys (FUN_180358100). Incorrect keys or HWIDs result in a ban.
+The ban delay (3 minutes) can be caused by an asynchronous server scan, DLL injection detection (MinHook memory scan), or HWID mismatch.
+Vulnerabilities and workarounds:
+SHA-1 (FUN_18002da00, FUN_180030c40, FUN_18001b280) is vulnerable to collision attacks, which can allow hash forgery.
+The lack of obfuscation in the code makes it easier for attackers to analyze.
+RSA Multi-Prime (FUN_180358100) can be vulnerable to attacks if prime numbers are poorly generated.
+Spoofers can be detected through MinHook memory scans or through repeated HWID checks.
+Recommendations for further analysis:
+Investigate HWID collection functions (e.g., via WMI, GetVolumeInformation, NtQuerySystemInformation).
+Analyze network traffic using Wireshark to determine the format of HWID packets.
+Check memory scanning functions to detect injection protection mechanisms.
+Analyze configuration files processed by FUN_1801d69a0 to determine paths to RSA keys.
+
+Conclusion
+The anti-cheat system SC-AC.dll is comprehensive, combining hashing (SHA-1, SHA-256), encryption (GCM, AES-GCM, ChaCha), key validation (FUN_180358100), configuration processing (FUN_1801d69a0), and secure communication (SSL/TLS). The new functions FUN_180358100 and FUN_1801d69a0 confirm the use of RSA multi-prime for HWID validation and configuration parsing to configure cryptographic parameters. The ban delay (3 minutes) is likely due to asynchronous HWID verification or detection of key or configuration inconsistencies.
