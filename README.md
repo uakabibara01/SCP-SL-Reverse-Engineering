@@ -42,14 +42,9 @@ It collects everything that SCPSL imports, so you can use these dumps in other p
 - [@uakabibara01](https://github.com/uakabibara01)
 
 
-## Installation
-
-```bash
-gh repo clone uakabibara01/SCP-SL-Reverse-Engineering
-```
-Download WinRar to unpack the archive.
-
 ## Using
+
+Download WinRar to unpack the archive.
 
 We download the latest release, unpack the files and get everything we need, then it's up to you:
 In the Decompiled Libraries file there are folders for each of the 4 libraries where there are files with functions, this is C-like code.
