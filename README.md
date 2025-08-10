@@ -36,6 +36,10 @@ A script file for Ghidra in Python will also be added to store all functions in 
 Folder with a file named: Dump-Files
 It collects everything that SCPSL imports, so you can use these dumps in other programs as you see fit ○( ＾皿＾)っ Hehe…
 
+## Additionally
+
+Also in the txt file SC-AN.dll.txt there is my own analysis of anti-cheat, but it is not complete since there are many functions, 
+but the main thing and most of the anti-cheat is written there since the largest functions by size were analyzed.
 
 ## Authors
 
