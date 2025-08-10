@@ -20,7 +20,7 @@ Other imported libraries do not require decompilation etc.: they are system ones
 You can also use anti-obfuscation programs to read C++ code etc.
 I chose this option, the following programs were used:
 
-[IDA]([https://github.com/dnSpy/dnSpy](https://hex-rays.com/ida-free))
+[IDA](https://hex-rays.com/ida-free)
 
 [Cutter](https://github.com/rizinorg/cutter)
 
@@ -30,7 +30,7 @@ I chose this option, the following programs were used:
 
 Dump program 1:PE-sieve: scans the given process, recognizes and removes various potentially harmful implants.
 
-Dump program 2: x64dbg (in this case you need to use x32dbg + plugin ScylaHide ) == https://x64dbg.com/
+Dump program 2: [x64dbg](https://x64dbg.com/) (in this case you need to use x32dbg + plugin ScylaHide )
 
 A script file for Ghidra in Python will also be added to store all functions in C-like code and ASM code. As the script name suggests,
 scriptC.py is for C-like code and scriptASM.py is for your own purposes.
