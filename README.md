@@ -1,8 +1,9 @@
 
 # SCP-SL-Reverse-Engineering
 
-This repository is the SCP:Secret-Laboratory game ARCHIVE, created using reverse engineering.
-It contains a dump of all the game libraries that each of them imports, as well as separate folders with decompilations into C-like code and ASM code: 4 main libraries And also the C# Server code:
+This repository is the ARCHIVE of the SCP:Secret-Laboratory game, created using reverse engineering.
+It contains a dump of all the game libraries that each of them imports, as well as separate folders with decompilations into C-like code and ASM code: 4 main libraries, 
+as well as the C# server code (SCP Secret Laboratory Dedicated Server):
 
 
 SCPSL.exe == 140000000.SCPSL.exe
