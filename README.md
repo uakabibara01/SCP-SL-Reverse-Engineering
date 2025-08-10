@@ -78,6 +78,7 @@ where the function files are located.
 and in Dump-Files there are folders for each library used by the game, there is a dump of the library and what it imports,
 in other RAR files there is the decompiled server code and several of its dlls if you want to know how the server works or rewrite the server logic then download it to suit your task
 but I advise you to download [dnSpy](https://github.com/dnSpy/dnSpy)
+
 If you download the RAR file with the decompiled server code, 
 please note that it is optimized for visual studio 2022 (.sln) 4.8 .NET Framework VS 2019/2022
 
