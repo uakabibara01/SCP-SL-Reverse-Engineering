@@ -42,7 +42,7 @@ It collects everything that SCPSL imports, so you can use these dumps in other p
 Also in the text file SC-AN.dll.txt there is my own analysis of the anti-cheat, but it is not complete, since there are many functions,
 but the main and most important part of the anti-cheat is written there, since the largest functions were analyzed.
 In the future, over time, when I analyze everything, I will write a reference about each of the libraries, 
-what it does, what it contains, etc., but for now, only about SC-AN.dll :( .
+what it does, what it contains, etc., but for now, only about SC-AC.dll :( .
 
 ## Files
 
